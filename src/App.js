@@ -1,12 +1,14 @@
 import "./css/App.css";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 // import Navigation from "./Navigation";
-import Main from "./Main";
+import { Switch, Route } from "react-router-dom";
+// import Main from "./Main";
+import ChooseFighter from "./components/ChooseFighter";
 
 const endpoint = `http://localhost:3001/pokemon`;
 function App() {
-  const [isFetching, setIsFetching] = useState(true);
+  // const [isFetching, setIsFetching] = useState(true);
   const [pokemonList, setPokemonList] = useState();
 
   // const fetchData = useCallback(async () => {
@@ -19,17 +21,38 @@ function App() {
   //   }
   // }, []);
   useEffect(() => {
-    axios.get(endpoint).then(({ data }) => {
-      setIsFetching(false);
-      setPokemonList(data);
-    });
+    axios
+      .get(endpoint)
+      .then(({ data }) => {
+        // setIsFetching(false);
+        setPokemonList(data);
+      })
+      .catch((e) => console.log(e));
     // fetchData();
   }, []);
   return (
-    <div className="container-fluid">
-      {/* <Navigation></Navigation> */}
-      {!isFetching && <Main pokemonList={pokemonList}></Main>}
-    </div>
+    <>
+      <div className="container-fluid">
+        {/* <Navigation></Navigation> */}
+        {/* return pokemonList.map((pokemon) => {
+    return (
+      <div key={pokemon.id}>
+        <p>{pokemon.id}</p> */}
+        {pokemonList &&
+          pokemonList.map((pokemon) => {
+            console.log({ p: pokemon });
+            return <ChooseFighter key={pokemon.id} pokemon={pokemon} />;
+          })}
+      </div>
+      <Switch>
+        <Route path="/pokemon">
+          <ChooseFighter pokemonList={pokemonList} />
+        </Route>
+        <Route path="/:id">{/* <FighterPreview /> */}</Route>
+        <Route path="/:id/:info">{/* <FighterDetailed /> */}</Route>
+        <Route path="/fight">{/* <Fight /> */}</Route>
+      </Switch>
+    </>
   );
 }
 

@@ -5,7 +5,6 @@ import ChooseFighter from "./components/ChooseFighter";
 // import FighterDetailed from "./src/components/FighterDetailed";
 // import Fight from "./src/components/Fight";
 export default function Main({ pokemonList }) {
-  console.log(pokemonList);
   return (
     <main>
       <Switch>
